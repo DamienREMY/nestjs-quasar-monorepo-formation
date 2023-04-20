@@ -14,7 +14,7 @@ import {
 } from 'vue'
 
 export default defineComponent({
-  name: 'ADLM2022 - POC',
+  name: 'Formation - Nest.js, Quasar, Prisma',
   setup () {
     const store = useStore()
 

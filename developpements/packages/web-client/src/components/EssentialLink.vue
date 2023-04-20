@@ -4,6 +4,7 @@
       clickable
       tag="a"
       target="_blank"
+      :inset-level=1
   >
     <q-item-section
         v-if="icon"

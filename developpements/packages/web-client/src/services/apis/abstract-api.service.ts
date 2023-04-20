@@ -71,4 +71,42 @@ export abstract class AbstractApiService {
       return AbstractApiService._catchHandler(err as AxiosError)
     }
   }
+
+  protected async doPost<R> (serviceUri: string, params?: any, config?: AxiosRequestConfig): Promise<WorkDone<R>> {
+    if (!serviceUri.startsWith('/')) {
+      serviceUri = '/' + serviceUri
+    }
+    const runConfig = _merge({
+      raxConfig: {
+        retry: 5,
+        noResponseRetries: 3
+      }
+    }, config)
+    try {
+      const resp = await this._axiosInstance.post<WorkDone<R>>(`${this._serviceApiBaseUrl}${serviceUri}`, params, runConfig)
+      return AbstractApiService._thenHandler(resp)
+    }
+    catch (err) {
+      return AbstractApiService._catchHandler(err as AxiosError)
+    }
+  }
+
+  protected async doPut<R> (serviceUri: string, params?: any, config?: AxiosRequestConfig): Promise<WorkDone<R>> {
+    if (!serviceUri.startsWith('/')) {
+      serviceUri = '/' + serviceUri
+    }
+    const runConfig = _merge({
+      raxConfig: {
+        retry: 5,
+        noResponseRetries: 3
+      }
+    }, config)
+    try {
+      const resp = await this._axiosInstance.put<WorkDone<R>>(`${this._serviceApiBaseUrl}${serviceUri}`, params, runConfig)
+      return AbstractApiService._thenHandler(resp)
+    }
+    catch (err) {
+      return AbstractApiService._catchHandler(err as AxiosError)
+    }
+  }
 }

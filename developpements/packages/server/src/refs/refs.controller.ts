@@ -3,12 +3,17 @@ import { AbstractController } from '@formation/servers-lib/dist/utils'
 import {
   CodeLabelResultDto,
   OffreReferenceResultDto,
+  ProductDto,
   WorkDone
 } from '@formation/shared-lib'
 import {
+  Body,
   Controller,
+  Delete,
   Get,
   Param,
+  Post,
+  Put,
   Query
 } from '@nestjs/common'
 import { RefsService } from './refs.service'
@@ -44,6 +49,41 @@ export class RefsController extends AbstractController {
   async searchOffresReferences (@Param('codeCampagne') codeCampagne: string,
     @Query('codeProduit') codeProduit?: string): Promise<WorkDone<OffreReferenceResultDto[]>> {
     return this.refsService.searchOffreReference(parseInt(codeCampagne, 10), null, codeProduit)
+  }
+
+  @Get('/produits')
+  async getProduit() : Promise<WorkDone<ProductDto[]>> {
+
+    return this.refsService.getProduit();
+
+  }
+
+  @Get('/produits/:codeProduit')
+  async getProduitByCode(@Param('codeProduit') codeProduit: string): Promise<WorkDone<ProductDto>> {
+
+    return this.refsService.getProduitByCode(codeProduit);
+
+  }
+
+  @Post('/produits')
+  async createProduit(@Body() produit: ProductDto): Promise<WorkDone<ProductDto>> {
+
+    return this.refsService.createProduit(produit);
+
+  }
+  @Put('/produits/:codeProduit')
+  async updateProduit(@Param(`codeProduit`) codeProduit: string,
+  @Body() product: ProductDto): Promise<WorkDone<ProductDto>> {
+
+    return this.refsService.updateProduit(codeProduit, product);
+
+  }
+
+
+  @Delete('/produits/:codeProduit')
+  async deleteProduit(@Param('codeProduit') codeProduit: string): Promise<string> {
+
+    return this.refsService.deleteProduit(codeProduit);
   }
 
 }

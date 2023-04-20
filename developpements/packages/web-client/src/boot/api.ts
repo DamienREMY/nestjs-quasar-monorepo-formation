@@ -10,10 +10,12 @@ import { Router } from 'vue-router'
 import { Store } from 'vuex'
 import { CustomersApiService } from '../services/apis/customers-api.service'
 import { RefsApiService } from '../services/apis/refs-api.service'
+import { ProductsApiService } from 'src/services/apis/products-api.service'
 import { SpinnerActionsEnum } from '../store/spinner/actions'
 
 let customersApiService: CustomersApiService
 let refsApiService: RefsApiService
+let productsApiService: ProductsApiService
 let axiosInstance: AxiosInstance
 
 const initAxiosInstance = (store: Store<any>, router: Router) => {
@@ -67,9 +69,11 @@ export default boot(({ store, router }) => {
   // Inject the services
   customersApiService = new CustomersApiService(axiosInstance, '/api/customers')
   refsApiService = new RefsApiService(axiosInstance, '/api/refs')
+  productsApiService = new ProductsApiService(axiosInstance, '/api/products')
 })
 
 export {
   customersApiService,
-  refsApiService
+  refsApiService,
+  productsApiService
 }

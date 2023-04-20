@@ -6,9 +6,10 @@ import { convertDbPartenaireToCodeLabelResultDto } from '@formation/servers-lib/
 import {
   CodeLabelResultDto,
   OffreReferenceResultDto,
+  ProductDto,
   WorkDone
 } from '@formation/shared-lib'
-import { Injectable } from '@nestjs/common'
+import { Delete, Get, Injectable, Post, Put } from '@nestjs/common'
 
 @Injectable()
 export class RefsService {
@@ -40,6 +41,9 @@ export class RefsService {
       { codeCampagne: 202201, codeOffre: 'OF01', libelleOffre: 'Offre #01', codeProduit: 'PR02', dateDerniereModification: new Date() },
       { codeCampagne: 202201, codeOffre: 'OF02', libelleOffre: 'Offre #02', codeProduit: 'PR07', dateDerniereModification: new Date() }
     ])
+
+
+    
     // return this.oracleDbService.executeQuery<OffreReferenceResultDto>(
     //   `SELECT CD_CAMP, CD_OFFRREFE, LB_OFFRREFE, CD_PROD, DT_MODI
     //    FROM ADLMASTER_OWNER.OFFRE_REFERENCE
@@ -89,4 +93,110 @@ export class RefsService {
     // !`) } else { return WorkDone.toError(newOffreReference) }
     return WorkDone.buildOk(offreReference)
   }
+
+  @Get('/produits')
+  async getProduit() : Promise<WorkDone<ProductDto[]>> {
+
+    const filter = "anneau"
+    const dbProducts = await this.prismaService.produit.findMany(
+
+      {
+        where: {
+          libelle:{
+            contains: filter,
+            mode: "insensitive"
+          }
+
+        },
+        orderBy: {
+          libelle: 'asc'
+        }
+      })
+
+      if(!dbProducts){
+        return WorkDone.buildError("une erreur est survenue durant la récupération des données")
+      }
+      return WorkDone.buildOk(dbProducts)
+
+
+  }
+
+  @Get('/produits/:codeProduit')
+  async getProduitByCode(codeProduit: string): Promise<WorkDone<ProductDto>> {
+
+    const dbProduct = await this.prismaService.produit.findUnique(
+      {
+        where:{
+          code:codeProduit
+          }
+        })
+
+    if(!dbProduct){return WorkDone.buildError("Code introuvable dans la base de données")}
+
+    return WorkDone.buildOk(dbProduct)
+
+  }
+
+  @Post('/produits')
+  async createProduit(produit: ProductDto): Promise<WorkDone<ProductDto>> {
+
+    if((await this.getProduitByCode(produit.code)).isOk){
+      return WorkDone.buildError("Le produit est déjà existant")
+    }
+    
+    this.logger.info(`creating: ${JSON.stringify(produit)}...`)
+    const dbProduct = await this.prismaService.produit.create({
+      data:produit
+    })
+
+    if(!dbProduct){return WorkDone.buildError("Erreur dans la création du produit")}
+    return WorkDone.buildOk(dbProduct)
+  }
+
+
+  @Put('/produits/:codeProduit')
+  async updateProduit(codeProduit: string,produit: ProductDto): Promise<WorkDone<ProductDto>> {
+
+    const wd :WorkDone<ProductDto> = await this.getProduitByCode(codeProduit)
+    if(!wd.isOk){
+      return wd;
+    }
+
+    try{
+    const dbProduct = await this.prismaService.produit.update({
+
+      where:{
+        code:codeProduit
+      },
+      data:{
+        libelle:produit.libelle
+      }
+
+    })
+
+    return WorkDone.buildOk(dbProduct);
+  }catch(e){ return WorkDone.buildError("Erreur dans la mise à jour du produit") }
+
+  }
+
+
+@Delete('/produits/:codeProduit')
+async deleteProduit(codeProduit: string): Promise<string> {
+  if(!(await this.getProduitByCode(codeProduit)).isOk){
+    return "Le produit n'existe pas";
+
+  }
+  try{
+  const dbProduct = await this.prismaService.produit.delete(
+    {
+      where:{
+        code:codeProduit
+        }
+      })
+
+    return "Produit supprimé"
+  }catch(e){return "Erreur dans la suppression du produit";}
+
+}
+
 }

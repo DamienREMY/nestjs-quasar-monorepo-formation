@@ -8,6 +8,7 @@ import common from './common/config/common'
 import { CustomersModule } from './customers/customers.module'
 import { HealthController } from './health/health.controller'
 import { RefsModule } from './refs/refs.module'
+import { ProductsModule } from './products/products.module'
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { RefsModule } from './refs/refs.module'
       load: [common]
     }),
     CustomersModule,
-    RefsModule
+    RefsModule,
+    ProductsModule
   ],
   controllers: [AppController, HealthController],
   providers: [
