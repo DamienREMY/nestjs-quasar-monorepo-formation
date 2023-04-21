@@ -7,9 +7,11 @@ import {
 } from '@formation/shared-lib'
 
 import {
+  Body,
   Controller,
   Get,
-  Param
+  Param,
+  Put
 } from '@nestjs/common'
 
 import { ProductsService } from './products.service'
@@ -33,6 +35,11 @@ async getFirstToTenthProducts(): Promise<WorkDone<ProductDto[]>> {
 @Get('/:code')
 async getSingleProduct(@Param('code') code:string):Promise<WorkDone<ProductDto>> {
   return this.productsService.getSingleProduct(code)
+}
+
+@Put('/:code')
+async putLibelleProduct(@Param('code') code:string, @Body() product: ProductDto ):Promise<WorkDone<ProductDto>> {
+  return this.productsService.putLibelleProduct(code, product)
 }
 
 }

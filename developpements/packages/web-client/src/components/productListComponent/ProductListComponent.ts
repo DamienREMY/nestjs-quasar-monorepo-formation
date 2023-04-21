@@ -25,8 +25,6 @@ export default defineComponent({
   }
  },
 
-
-
  setup() {
 
   const listProducts = ref<ProductDto[]>()
@@ -61,9 +59,6 @@ export default defineComponent({
       format: (val: string) => `${val}`,
       sortable: true
     }])
-
-
-
 
     return{
       columns,

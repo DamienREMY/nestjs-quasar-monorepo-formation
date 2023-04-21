@@ -21,4 +21,9 @@ export class ProductsApiService extends AbstractApiService {
     return this.doGet(`/${code}`)
   }
 
+  // Put a new libelle for a product given its code
+  public async putLibelleProduct (code: string, product: ProductDto): Promise<WorkDone<ProductDto>>{
+    return this.doPut(`/${code}`, product)
+  }
+
 }

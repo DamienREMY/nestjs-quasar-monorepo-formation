@@ -8,7 +8,8 @@ import {
   WorkDone,
 } from '@formation/shared-lib'
 
-import { Get, Injectable } from '@nestjs/common'
+import { Get, Injectable, Put } from '@nestjs/common'
+import { words } from 'lodash'
 
 @Injectable()
 export class ProductsService {
@@ -57,6 +58,35 @@ async getSingleProduct(code: string): Promise<WorkDone<ProductDto>> {
   return WorkDone.buildOk(dbProduct)
 }catch(e){return WorkDone.buildError("Erreur dans la sélection du produit")}
   
+}
+
+@Put('/:code')
+async putLibelleProduct(code: string, product: ProductDto): Promise<WorkDone<ProductDto>> {
+
+  const wd :WorkDone<ProductDto> = await this.getSingleProduct(code)
+  if(!wd.isOk){
+    return wd;
+  }
+
+  try{
+
+    const dbProduct = await this.prismaService.produit.update({
+
+      where:{
+        code:code
+      },
+      data :{
+        libelle:product.libelle
+      }
+
+    })
+
+    return WorkDone.buildOk(dbProduct)
+
+  }catch(e){
+    return WorkDone.buildError("Erreur dans la modification du libellé")
+  }
+
 }
 
 }
