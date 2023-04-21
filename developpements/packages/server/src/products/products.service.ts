@@ -23,15 +23,40 @@ export class ProductsService {
 @Get('')
 async getFirstToTenthProducts(): Promise<WorkDone<ProductDto[]>> {
 
+  try{
   const dbProducts = await this.prismaService.produit.findMany(
 
     {
       take: 10,
       orderBy:{
-        libelle : 'asc'
+
+        code : 'asc'
       }
     })
     return WorkDone.buildOk(dbProducts)
+
+  }
+  catch(e){return WorkDone.buildError("Erreur dans la sélection des 10 produits")}
+}
+
+@Get('/:code')
+async getSingleProduct(code: string): Promise<WorkDone<ProductDto>> {
+
+  try{
+  const dbProduct = await this.prismaService.produit.findUnique(
+
+    {
+      where:{
+        code: code
+      }
+    }
+  )
+
+  if(!dbProduct){return WorkDone.buildError("Code introuvable dans la base de données")}
+
+  return WorkDone.buildOk(dbProduct)
+}catch(e){return WorkDone.buildError("Erreur dans la sélection du produit")}
+  
 }
 
 }

@@ -2,13 +2,9 @@ import {
   ProductDto,
 } from '@formation/shared-lib'
 
-//import { date } from 'quasar'
-
 import {
   defineComponent,
   onBeforeMount,
-  //onBeforeMount,
-  //reactive,
   ref
 } from 'vue'
 
@@ -16,6 +12,8 @@ import {
 import {
   productsApiService
 } from '../../boot/api'
+
+import { copyToClipboard } from 'quasar'
 
 export default defineComponent({
 
@@ -26,6 +24,8 @@ export default defineComponent({
     required: true
   }
  },
+
+
 
  setup() {
 
@@ -40,8 +40,6 @@ export default defineComponent({
       listProducts.value = []
     }
   })
-
-  //const products = ref(listProducts);
 
   const columns = ref([
     {
@@ -65,10 +63,21 @@ export default defineComponent({
     }])
 
 
+
+
     return{
       columns,
-      listProducts
+      listProducts,
+      copyToClipboard
     }
+
+ },
+
+ methods : {
+
+  async pushRouteToDetail(code : string) {
+    await this.$router.push('products/' + code)
+  }
 
  }
 

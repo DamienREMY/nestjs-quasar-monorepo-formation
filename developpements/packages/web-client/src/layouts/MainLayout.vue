@@ -150,8 +150,8 @@ const formationRoutesList = [
     caption: null,
     icon: 'list',
     route: '/products'
+  },
 
-  }
 ]
 
 export default defineComponent({

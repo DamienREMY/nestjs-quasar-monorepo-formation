@@ -9,7 +9,7 @@ import {
 import {
   Controller,
   Get,
-  Query
+  Param
 } from '@nestjs/common'
 
 import { ProductsService } from './products.service'
@@ -28,6 +28,11 @@ export class ProductsController extends AbstractController {
 @Get('')
 async getFirstToTenthProducts(): Promise<WorkDone<ProductDto[]>> {
   return this.productsService.getFirstToTenthProducts()
+}
+
+@Get('/:code')
+async getSingleProduct(@Param('code') code:string):Promise<WorkDone<ProductDto>> {
+  return this.productsService.getSingleProduct(code)
 }
 
 }

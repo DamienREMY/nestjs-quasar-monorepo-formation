@@ -1,5 +1,5 @@
 <template>
-     <div class="q-px-sm q-px-md-md">
+     <div>
 
       <q-table
           :columns="columns"
@@ -10,6 +10,20 @@
           style="with: 100%"
           title="Liste des produits"
       >
+      <template #body-cell-code="props">
+    <q-td
+      :props="props"
+    >
+      <q-btn
+        flat
+        color="primary"
+        :label="props.value"
+        @click="pushRouteToDetail(props.value)"
+      />
+    </q-td>
+  </template>
+
+
       </q-table>
      </div>
 </template>
