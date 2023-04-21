@@ -17,8 +17,8 @@ export class ProductsApiService extends AbstractApiService {
   }
 
   // Get a single product from its code
-  public async getProductDetail (code: string): Promise<WorkDone<ProductDto>> {
-    return this.doGet('/:code', code)
+  public async getProductDetail (code : string): Promise<WorkDone<ProductDto>> {
+    return this.doGet(`/${code}`)
   }
 
 }

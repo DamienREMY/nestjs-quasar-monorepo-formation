@@ -76,6 +76,7 @@ export default defineComponent({
  methods : {
 
   async pushRouteToDetail(code : string) {
+    localStorage.setItem('codeProduct',code)
     await this.$router.push('products/' + code)
   }
 
@@ -83,4 +84,3 @@ export default defineComponent({
 
 
 })
-

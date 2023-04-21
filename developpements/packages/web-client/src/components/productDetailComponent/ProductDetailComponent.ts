@@ -12,6 +12,7 @@ import {
 import {
   productsApiService
 } from '../../boot/api'
+import { isString } from 'lodash'
 
 export default defineComponent({
 
@@ -28,17 +29,22 @@ export default defineComponent({
 
   const product = ref<ProductDto>()
 
+  const code: string | null = localStorage.getItem('codeProduct')
 
-
+  if(isString(code)){
   onBeforeMount(async () => {
 
-    const workD = await productsApiService.getProductDetail('')
+    const workD = await productsApiService.getProductDetail(code)
+    localStorage.clear()
+
     if(workD.isOk && !!workD.data) {
       product.value = workD.data
     }else{
       product.value = undefined
     }
   })
+}
+
 
     return{
       product
