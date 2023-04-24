@@ -1,0 +1,41 @@
+.page-product{
+
+  display: grid;
+  grid-template-columns: 2.5% 95% 2.5%;
+  grid-template-rows: 5% 80% 10% 5%;
+  height: 800px;
+
+}
+
+.information-product{
+
+grid-column: 2;
+grid-row: 2;
+display: flex;
+flex-direction: column wrap;
+width: 90%;
+justify-content: space-evenly;
+}
+
+.form-detail-product{
+
+  width: 50%;
+}
+
+
+.form-update-product{
+
+  width: 30%;
+}
+
+.button-navigation{
+  grid-column: 2;
+  grid-row: 3;
+}
+
+#delete-button{
+
+  margin-top: 30px;
+
+
+}

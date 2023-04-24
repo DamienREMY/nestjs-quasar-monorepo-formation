@@ -26,4 +26,9 @@ export class ProductsApiService extends AbstractApiService {
     return this.doPut(`/${code}`, product)
   }
 
+  // Delete a product from the database given its code
+  public async deleteProduct (code: string): Promise<WorkDone<string>>{
+    return this.doDelete(`/${code}`)
+  }
+
 }

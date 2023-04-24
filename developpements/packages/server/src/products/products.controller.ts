@@ -11,7 +11,8 @@ import {
   Controller,
   Get,
   Param,
-  Put
+  Put,
+  Delete
 } from '@nestjs/common'
 
 import { ProductsService } from './products.service'
@@ -40,6 +41,12 @@ async getSingleProduct(@Param('code') code:string):Promise<WorkDone<ProductDto>>
 @Put('/:code')
 async putLibelleProduct(@Param('code') code:string, @Body() product: ProductDto ):Promise<WorkDone<ProductDto>> {
   return this.productsService.putLibelleProduct(code, product)
+}
+
+@Delete('/:code')
+async deleteProduct(@Param('code') code:string): Promise<string> {
+
+  return this.productsService.deleteProduct(code)
 }
 
 }

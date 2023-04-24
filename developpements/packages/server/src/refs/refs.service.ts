@@ -187,7 +187,7 @@ async deleteProduit(codeProduit: string): Promise<string> {
 
   }
   try{
-  const dbProduct = await this.prismaService.produit.delete(
+  await this.prismaService.produit.delete(
     {
       where:{
         code:codeProduit

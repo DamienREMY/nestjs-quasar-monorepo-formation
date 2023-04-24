@@ -109,4 +109,26 @@ export abstract class AbstractApiService {
       return AbstractApiService._catchHandler(err as AxiosError)
     }
   }
+
+  protected async doDelete<R> (serviceUri: string, params?: any, config?: AxiosRequestConfig): Promise<WorkDone<R>> {
+    if (!serviceUri.startsWith('/')) {
+      serviceUri = '/' + serviceUri
+    }
+    const runConfig = _merge({
+      raxConfig: {
+        retry: 5,
+        noResponseRetries: 3
+      }
+    }, config, { params })
+    try {
+      const resp = await this._axiosInstance.delete<WorkDone<R>>(`${this._serviceApiBaseUrl}${serviceUri}`, runConfig)
+      return AbstractApiService._thenHandler(resp)
+    }
+    catch (err) {
+      return AbstractApiService._catchHandler(err as AxiosError)
+    }
+  }
+
+
+
 }

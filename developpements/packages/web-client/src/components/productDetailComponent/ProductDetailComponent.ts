@@ -88,6 +88,17 @@ export default defineComponent({
     }else{
       console.log('Erreur dans la modification de la base de données')
     }
+  },
+
+  async deleteProduct(){
+
+    if(isString(this.code)){
+
+      await productsApiService.deleteProduct(this.code)
+      this.pushRouteToList()
+    }else{
+      console.log('Erreur dans la suppression du produit')
+    }
   }
 
 

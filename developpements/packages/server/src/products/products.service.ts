@@ -8,7 +8,7 @@ import {
   WorkDone,
 } from '@formation/shared-lib'
 
-import { Get, Injectable, Put } from '@nestjs/common'
+import { Delete, Get, Injectable, Put } from '@nestjs/common'
 import { words } from 'lodash'
 
 @Injectable()
@@ -86,6 +86,28 @@ async putLibelleProduct(code: string, product: ProductDto): Promise<WorkDone<Pro
   }catch(e){
     return WorkDone.buildError("Erreur dans la modification du libellé")
   }
+
+}
+
+@Delete('/:code')
+async deleteProduct(code: string): Promise<string> {
+
+  if(!((await this.getSingleProduct(code)).isOk)){
+    return "Aucun produit identifié avec ce code"
+  }
+
+  try{
+    await this.prismaService.produit.delete({
+
+      where: {code:code}
+    })
+
+  return "Suppression du produit réalisée"   
+  }catch(e){
+
+    return "Erreur dans la suppression du produit"
+  }
+
 
 }
 
