@@ -20,7 +20,21 @@
         </template>
       </q-field>
 
-      <q-btn id="delete-button" color="red" icon-right="delete" label="Supprimer le produit" @click="deleteProduct()"/>
+      <q-btn id="delete-button" color="red" icon="delete" label="Supprimer le produit" @click="confirm = true"/>
+
+      <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="delete" color="red" text-color="white" />
+          <span class="q-ml-sm">Souhaitez-vous vraiment supprimer ce produit de la base de données ?<br>(Vous serez redirigé vers la page de liste des produits)</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Annuler" color="primary" v-close-popup />
+          <q-btn flat label="Confirmer" color="primary" v-close-popup @click="deleteProduct()"/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
   </div>
 

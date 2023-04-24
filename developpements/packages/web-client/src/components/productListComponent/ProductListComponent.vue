@@ -26,7 +26,49 @@
 
       </q-table>
      </div>
+
+    <div>
+
+    <q-btn id="delete-button" color="primary" icon="add" label="Ajouter un produit" @click="confirm = true"/>
+
+    <q-dialog v-model="confirm" persistent class="dialbox-add-product">
+      <q-card>
+
+        <q-card-section class="dialbox-add-product">
+          <q-avatar icon="add" color="primary" text-color="white" />
+          <span id="dialbox-title">Formulaire d'ajout de produit</span>
+
+        <div class="dialbox-content">
+
+        <q-input outlined label="Code du produit" stack-label
+        v-model="code"
+        lazy-rules
+        :rules="[ val => val && val.length > 0 || 'Veuillez entrer un code valide !']"
+      />
+
+      <q-input outlined label="Nom générique du produit" stack-label
+        v-model="libelle"
+        lazy-rules
+        :rules="[ val => val && val.length > 0 || 'Veuillez entrer un nom valide !']"
+      />
+
+      <q-btn flat label="Annuler" color="primary" v-close-popup />
+      <q-btn flat label="Ajouter" color="primary" v-close-popup @click="postProduct(code,libelle)" />
+
+        </div>
+
+      </q-card-section>
+
+      </q-card>
+    </q-dialog>
+
+    </div>
+
 </template>
 
 <script lang="ts"
         src="./ProductListComponent.ts"></script>
+<style lang="scss"
+        src="./ProductListComponent.scss"></style>
+
+

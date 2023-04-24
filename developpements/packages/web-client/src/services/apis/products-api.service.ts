@@ -31,4 +31,9 @@ export class ProductsApiService extends AbstractApiService {
     return this.doDelete(`/${code}`)
   }
 
+  // Add a new product into the database
+  public async postProduct (product: ProductDto): Promise<WorkDone<ProductDto>>{
+    return this.doPost('', product)
+  }
+
 }

@@ -140,13 +140,7 @@ const formationRoutesList = [
     route: '/customers'
   },
   {
-    title: 'Référentiel Produits',
-    caption: null,
-    icon: 'warehouse',
-    route: '/refs/products'
-  },
-  {
-    title: 'Liste Produits',
+    title: 'Liste produits',
     caption: null,
     icon: 'list',
     route: '/products'

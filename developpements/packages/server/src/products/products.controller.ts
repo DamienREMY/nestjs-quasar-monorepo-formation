@@ -12,7 +12,8 @@ import {
   Get,
   Param,
   Put,
-  Delete
+  Delete,
+  Post
 } from '@nestjs/common'
 
 import { ProductsService } from './products.service'
@@ -49,4 +50,10 @@ async deleteProduct(@Param('code') code:string): Promise<string> {
   return this.productsService.deleteProduct(code)
 }
 
+@Post('')
+async postProduct(@Body() product:ProductDto): Promise<WorkDone<ProductDto>>{
+
+  return this.productsService.postProduct(product)
+
+}
 }

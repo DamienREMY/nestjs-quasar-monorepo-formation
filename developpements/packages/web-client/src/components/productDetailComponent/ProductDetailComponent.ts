@@ -9,6 +9,8 @@ import {
 } from 'vue'
 
 
+
+
 import {
   productsApiService
 } from '../../boot/api'
@@ -49,6 +51,7 @@ export default defineComponent({
       product,
       libelle,
       code,
+      confirm: ref(false),
 
 
   onSubmit() {

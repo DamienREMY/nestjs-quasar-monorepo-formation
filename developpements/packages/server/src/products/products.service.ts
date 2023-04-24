@@ -8,8 +8,7 @@ import {
   WorkDone,
 } from '@formation/shared-lib'
 
-import { Delete, Get, Injectable, Put } from '@nestjs/common'
-import { words } from 'lodash'
+import { Delete, Get, Injectable, Post, Put } from '@nestjs/common'
 
 @Injectable()
 export class ProductsService {
@@ -110,5 +109,23 @@ async deleteProduct(code: string): Promise<string> {
 
 
 }
+
+@Post('')
+async postProduct(product : ProductDto): Promise<WorkDone<ProductDto>> {
+
+  if((await this.getSingleProduct(product.code)).isOk){
+    return WorkDone.buildError("Le produit est déjà existant")
+  }
+
+  this.logger.info(`creating: ${JSON.stringify(product)}...`)
+  const dbProduct = await this.prismaService.produit.create({
+    data:product
+  })
+
+  if(!dbProduct){return WorkDone.buildError("Erreur dans la création du produit dans la base de données")}
+  return WorkDone.buildOk(dbProduct)
+
+}
+
 
 }
