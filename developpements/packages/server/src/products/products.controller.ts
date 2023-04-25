@@ -13,7 +13,8 @@ import {
   Param,
   Put,
   Delete,
-  Post
+  Post,
+  Query
 } from '@nestjs/common'
 
 import { ProductsService } from './products.service'
@@ -32,6 +33,11 @@ export class ProductsController extends AbstractController {
 @Get('')
 async getFirstToTenthProducts(): Promise<WorkDone<ProductDto[]>> {
   return this.productsService.getFirstToTenthProducts()
+}
+
+@Get('filter')
+async queryProductfromLibelle(@Query('libelle') libelle:string): Promise<WorkDone<ProductDto[]>> {
+  return this.productsService.queryProductfromLibelle(libelle)
 }
 
 @Get('/:code')

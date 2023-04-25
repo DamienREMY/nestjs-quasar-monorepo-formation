@@ -41,6 +41,7 @@ export class ProductDto {
 
 code:string;
 libelle:string;
+commentaires:string;
 
 }
 

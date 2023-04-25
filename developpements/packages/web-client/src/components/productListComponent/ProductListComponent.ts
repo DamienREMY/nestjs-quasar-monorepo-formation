@@ -14,7 +14,6 @@ import {
 } from '../../boot/api'
 
 import { copyToClipboard, useQuasar } from 'quasar'
-import { isUndefined } from 'lodash'
 
 export default defineComponent({
 
@@ -28,7 +27,7 @@ export default defineComponent({
 
  setup() {
 
-  const product = ref<ProductDto>({code:'',libelle:''})
+  const product = ref<ProductDto>({code:'',libelle:'',commentaires:''})
   const $quasar = useQuasar()
   const code = ref<string>('')
   const libelle = ref<string>('')
@@ -59,12 +58,22 @@ export default defineComponent({
     {
       name: 'libelle',
       required: true,
-      label: 'Nom générique',
+      label: 'Libellé',
       align: 'left',
       field: (row: ProductDto) => row.libelle,
       format: (val: string) => `${val}`,
       sortable: true
-    }])
+    },
+  {
+    name: 'commentaires',
+    required: true,
+    label: 'Commentaires',
+    align: 'left',
+    field: (row:ProductDto) => row.commentaires,
+    format: (val: string) => `${val}`,
+    sortable:false
+
+  }])
 
     return{
       columns,
@@ -75,13 +84,13 @@ export default defineComponent({
       confirm: ref(false),
       copyToClipboard,
 
-      onSubmit() {
+      onSubmit(message:string) {
 
         $quasar.notify({
           color: 'blue-3',
           textColor: 'black',
           icon: 'cloud_done',
-          message: 'Produit ajouté avec succès'
+          message: message
 
         })
 
@@ -98,6 +107,28 @@ export default defineComponent({
     await this.$router.push('products/' + code)
   },
 
+  async getProducts():Promise<ProductDto[]>{
+
+    const workProducts = await productsApiService.getProductsList()
+
+    if(workProducts.isOk && !!workProducts.data) {
+      return workProducts.data
+    }
+      workProducts.data = []
+      return workProducts.data
+    },
+
+  async queryProductfromLibelle(libelle:string){
+
+    const products = await productsApiService.queryProductfromLibelle(libelle)
+
+    if(products.isOk && !! products.data) {
+      this.listProducts = products.data
+    }else{
+      this.listProducts = []
+    }
+  },
+
   async postProduct(code:string, libelle:string){
 
       this.product.code = code
@@ -105,7 +136,7 @@ export default defineComponent({
 
     await productsApiService.postProduct(this.product)
 
-    this.onSubmit()
+    this.onSubmit('Produit ajouté à la base de donnée')
 
   }
 

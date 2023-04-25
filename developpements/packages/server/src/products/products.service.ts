@@ -59,6 +59,34 @@ async getSingleProduct(code: string): Promise<WorkDone<ProductDto>> {
   
 }
 
+@Get('/filter')
+async queryProductfromLibelle(libelle: string): Promise<WorkDone<ProductDto[]>> {
+
+  try{
+    const dbProduct = await this.prismaService.produit.findMany(
+
+      {
+        where:{
+          libelle:{
+            startsWith:libelle
+          }
+        },
+        orderBy:{
+          code: 'asc'
+        }
+      }
+    )
+    if(!dbProduct){return WorkDone.buildError("Pas de produit au libellé correspondant")}
+    return WorkDone.buildOk(dbProduct)
+  }catch(e){
+    return WorkDone.buildError("Erreur dans la recherche produit")
+  }
+}
+
+
+
+
+
 @Put('/:code')
 async putLibelleProduct(code: string, product: ProductDto): Promise<WorkDone<ProductDto>> {
 

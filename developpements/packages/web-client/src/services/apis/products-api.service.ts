@@ -16,6 +16,11 @@ export class ProductsApiService extends AbstractApiService {
     return this.doGet('')
   }
 
+  // Get a list of products filtered from a "libelle"
+  public async queryProductfromLibelle (libelle:string) : Promise<WorkDone<ProductDto[]>> {
+    return this.doGet(`/filter?libelle=${libelle}`)
+  }
+
   // Get a single product from its code
   public async getProductDetail (code : string): Promise<WorkDone<ProductDto>> {
     return this.doGet(`/${code}`)

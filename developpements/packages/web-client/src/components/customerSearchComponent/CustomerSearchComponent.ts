@@ -174,7 +174,7 @@ export default defineComponent({
         label: 'Date de dernière commande',
         align: 'center',
         field: (row: CustomerSearchResultDto) => row.dateDerniereCommande,
-        format: (val: string) => `${!!val ? formatDate(val, 'DD/MM/YYYY') : '---'}`,
+        format: (val: string) => `${val ? formatDate(val, 'DD/MM/YYYY') : '---'}`,
         sortable: true
       }
     ]
@@ -214,7 +214,7 @@ export default defineComponent({
       currentSearchParams = searchAllParams.criterias as SearchCustomerDto
 
       if (!doCheckForSearch(searchAllParams)) {
-        displayNotification(NotificationStatusEnum.WARNING, `Entrez au moins un critère de recherche`)
+        displayNotification(NotificationStatusEnum.WARNING, 'Entrez au moins un critère de recherche')
         return
       }
 
