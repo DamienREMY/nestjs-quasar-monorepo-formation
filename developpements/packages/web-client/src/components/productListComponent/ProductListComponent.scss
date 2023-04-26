@@ -1,58 +1,35 @@
-
 .list-product-page {
-
-  margin: 30px 20px 30px 20px
+  margin: 30px 20px 30px 20px;
 }
 
-.dialbox-add-product{
-
-
+.dialbox-add-product {
   height: 300px;
   width: 400px;
   margin-left: 15px;
-
 }
 
-.filter-form{
-
-  width: 60%;
-  display: grid;
-  padding-bottom: 20px;
-  grid-template-rows: 10% 80% 10%;
-
-}
-
-.filter-input {
-  grid-row: 2;
+.filter-form {
+  width: 30%;
 }
 
 .filter-button {
-  grid-column: 2;
-  grid-row: 2;
   width: 170px;
-  margin: 20px 20px 20px 20px
+  margin: 20px 0px 20px 0px;
+  grid-column: 3;
 }
 
-
-
-
 #add-button {
-
   margin-top: 30px;
   margin-left: 15px;
 }
 
 #dialbox-title {
-
   font-size: 1.5em;
   font-weight: 500;
   margin-left: 15px;
-
 }
 
-.dialbox-content{
-
+.dialbox-content {
   width: 75%;
   margin-top: 30px;
 }
-

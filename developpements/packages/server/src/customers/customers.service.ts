@@ -1,15 +1,15 @@
 import {
   LoggerService,
-  PrismaService
-} from '@formation/servers-lib/dist/services'
+  PrismaService,
+} from '@formation/servers-lib/dist/services';
 import {
   CustomerSearchResultDto,
   IPaginatedListDto,
   ISearchDto,
   SearchCustomerDto,
-  WorkDone
-} from '@formation/shared-lib'
-import { Injectable } from '@nestjs/common'
+  WorkDone,
+} from '@formation/shared-lib';
+import { Injectable } from '@nestjs/common';
 
 // function toCustomerSearchResultDtoRowMapper (row: any): CustomerSearchResultDto {
 //   return {
@@ -25,16 +25,17 @@ import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class CustomersService {
-
-  constructor (
+  constructor(
     private readonly logger: LoggerService,
     private readonly prismaService: PrismaService,
   ) {
-    this.logger.info('CustomersService created')
+    this.logger.info('CustomersService created');
   }
 
-  async findOne (codeFichierPartenaire: string, chronoClient: string): Promise<WorkDone<CustomerSearchResultDto>> {
-
+  async findOne(
+    codeFichierPartenaire: string,
+    chronoClient: string,
+  ): Promise<WorkDone<CustomerSearchResultDto>> {
     // const wd = await this.oracleDbService.executeQuery<CustomerSearchResultDto>(
     //   `SELECT cli.CD_FICHPART, cli.NM_CHROCLIE, cli.LB_PREN, cli.LB_NOM, cli.CD_POST, cli.LB_COMM, com.DT_COMM
     //             FROM ADLMASTER_OWNER.VS_CLIENT cli
@@ -47,21 +48,20 @@ export class CustomersService {
     // }, rowMapper: toCustomerSearchResultDtoRowMapper })  if (wd.isOk && wd.data) { return (wd.data.length > 0) ? WorkDone.buildOk(wd.data[0]) :
     // WorkDone.buildError(`Customer with ChronoClient ${chronoClient} not found in fichPart ${codeFichierPartenaire} !`) } else { return WorkDone.toError(wd)
     // }
-    return WorkDone.buildOk(
-      {
-        codeFichierPartenaire: '001',
-        chronoClient: '11111111',
-        nom: 'Doe',
-        prenom: 'John',
-        codePostal: '34130',
-        ville: 'Mauguio',
-        dateDerniereCommande: null
-      }
-    )
+    return WorkDone.buildOk({
+      codeFichierPartenaire: '001',
+      chronoClient: '11111111',
+      nom: 'Doe',
+      prenom: 'John',
+      codePostal: '34130',
+      ville: 'Mauguio',
+      dateDerniereCommande: null,
+    });
   }
 
-  async searchCustomer (searchDto: ISearchDto<SearchCustomerDto>): Promise<WorkDone<IPaginatedListDto<CustomerSearchResultDto>>> {
-
+  async searchCustomer(
+    searchDto: ISearchDto<SearchCustomerDto>,
+  ): Promise<WorkDone<IPaginatedListDto<CustomerSearchResultDto>>> {
     //FIXME must be dynamic
     // searchDto.pagination.sortBy = (searchDto.pagination.sortBy === 'nom') ? 'LB_NOM'
     //   : (searchDto.pagination.sortBy === 'prenom') ? 'LB_PREN'
@@ -107,7 +107,8 @@ export class CustomersService {
     //     rowMapper: toCustomerSearchResultDtoRowMapper
     //   })
     return WorkDone.buildOk({
-      rowsNumber: 2, list: [
+      rowsNumber: 2,
+      list: [
         {
           codeFichierPartenaire: '001',
           chronoClient: '11111111',
@@ -115,7 +116,7 @@ export class CustomersService {
           prenom: 'John',
           codePostal: '34130',
           ville: 'Mauguio',
-          dateDerniereCommande: null
+          dateDerniereCommande: null,
         },
         {
           codeFichierPartenaire: '001',
@@ -124,9 +125,9 @@ export class CustomersService {
           prenom: 'Michel',
           codePostal: '34000',
           ville: 'Montpellier',
-          dateDerniereCommande: new Date()
-        }
-      ]
-    })
+          dateDerniereCommande: new Date(),
+        },
+      ],
+    });
   }
 }

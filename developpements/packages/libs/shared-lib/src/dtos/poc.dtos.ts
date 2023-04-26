@@ -45,6 +45,13 @@ commentaires:string;
 
 }
 
+export declare class OffreDto {
+  code: string;
+  libelle: string;
+  codeProduit: string;
+  dateDerniereModification: Date;
+}
+
 export class SearchProductDto {
 
   labelLike:string;

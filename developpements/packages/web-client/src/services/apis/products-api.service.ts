@@ -1,4 +1,5 @@
 import {
+  OffreDto,
   ProductDto,
   WorkDone
 } from '@formation/shared-lib'
@@ -17,14 +18,20 @@ export class ProductsApiService extends AbstractApiService {
   }
 
   // Get a list of products filtered from a "libelle"
-  public async queryProductfromLibelle (libelle:string) : Promise<WorkDone<ProductDto[]>> {
-    return this.doGet(`/filter?libelle=${libelle}`)
+  public async getProductFiltered (code:string,libelle:string) : Promise<WorkDone<ProductDto[]>> {
+    return this.doGet(`/filter?code=${code}&libelle=${libelle}`)
   }
 
   // Get a single product from its code
   public async getProductDetail (code : string): Promise<WorkDone<ProductDto>> {
     return this.doGet(`/${code}`)
   }
+
+  // Get offers from products code
+  public async getOffersFromProducts(products: ProductDto[]) : Promise<WorkDone<OffreDto[]>>{
+    return this.doGet('offers', products)
+  }
+
 
   // Put a new libelle for a product given its code
   public async putLibelleProduct (code: string, product: ProductDto): Promise<WorkDone<ProductDto>>{

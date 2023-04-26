@@ -1,10 +1,7 @@
-import { LoggerService } from '@formation/servers-lib/dist/services'
-import { AbstractController } from '@formation/servers-lib/dist/utils'
+import { LoggerService } from '@formation/servers-lib/dist/services';
+import { AbstractController } from '@formation/servers-lib/dist/utils';
 
-import {
-  ProductDto,
-  WorkDone
-} from '@formation/shared-lib'
+import { ProductDto, OffreReferenceResultDto, WorkDone, OffreDto } from '@formation/shared-lib';
 
 import {
   Body,
@@ -14,52 +11,63 @@ import {
   Put,
   Delete,
   Post,
-  Query
-} from '@nestjs/common'
+  Query,
+} from '@nestjs/common';
 
-import { ProductsService } from './products.service'
+import { ProductsService } from './products.service';
 
 @Controller('products')
 export class ProductsController extends AbstractController {
-
-  constructor (
+  constructor(
     private readonly logger: LoggerService,
-    private readonly productsService: ProductsService
+    private readonly productsService: ProductsService,
   ) {
-    super()
-    this.logger.info('ProductsController created')
+    super();
+    this.logger.info('ProductsController created');
   }
 
-@Get('')
-async getFirstToTenthProducts(): Promise<WorkDone<ProductDto[]>> {
-  return this.productsService.getFirstToTenthProducts()
-}
+  @Get('')
+  async getFirstToTenthProducts(): Promise<WorkDone<ProductDto[]>> {
+    return this.productsService.getFirstToTenthProducts();
+  }
 
-@Get('filter')
-async queryProductfromLibelle(@Query('libelle') libelle:string): Promise<WorkDone<ProductDto[]>> {
-  return this.productsService.queryProductfromLibelle(libelle)
-}
+  @Get('filter')
+  async queryProductfromLibelle(
+    @Query('code') code: string,
+    @Query('libelle') libelle: string = "",
+  ): Promise<WorkDone<ProductDto[]>> {
+    return this.productsService.queryProductfromLibelle(code,libelle);
+  }
 
-@Get('/:code')
-async getSingleProduct(@Param('code') code:string):Promise<WorkDone<ProductDto>> {
-  return this.productsService.getSingleProduct(code)
-}
+  @Get('offers')
+  async getOffersFromProducts(@Body() products: ProductDto[]): Promise<WorkDone<OffreDto[]>> {
+    return this.productsService.getOffersFromProducts(products)
+  }
 
-@Put('/:code')
-async putLibelleProduct(@Param('code') code:string, @Body() product: ProductDto ):Promise<WorkDone<ProductDto>> {
-  return this.productsService.putLibelleProduct(code, product)
-}
+  @Get('/:code')
+  async getSingleProduct(
+    @Param('code') code: string,
+  ): Promise<WorkDone<ProductDto>> {
+    return this.productsService.getSingleProduct(code);
+  }
 
-@Delete('/:code')
-async deleteProduct(@Param('code') code:string): Promise<string> {
+  @Put('/:code')
+  async putLibelleProduct(
+    @Param('code') code: string,
+    @Body() product: ProductDto,
+  ): Promise<WorkDone<ProductDto>> {
+    return this.productsService.putLibelleProduct(code, product);
+  }
 
-  return this.productsService.deleteProduct(code)
-}
+  @Delete('/:code')
+  async deleteProduct(@Param('code') code: string): Promise<string> {
+    return this.productsService.deleteProduct(code);
+  }
 
-@Post('')
-async postProduct(@Body() product:ProductDto): Promise<WorkDone<ProductDto>>{
-
-  return this.productsService.postProduct(product)
-
-}
+  @Post('')
+  async postProduct(
+    @Body() product: ProductDto,
+  ): Promise<WorkDone<ProductDto>> {
+    return this.productsService.postProduct(product);
+  }
 }
