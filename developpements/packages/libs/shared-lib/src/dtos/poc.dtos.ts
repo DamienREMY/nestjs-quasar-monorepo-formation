@@ -33,8 +33,20 @@ export interface OffreReferenceResultDto {
   codeCampagne: number,
   codeOffre: string,
   codeProduit: string,
-  dateDerniereModification: Date
+  dateDerniereModification: Date,
   libelleOffre: string,
+}
+
+export class ClientDto {
+
+  codeFichierPartenaire: string;
+  chronoClient: string;
+  prenom: string;
+  nom: string;
+  codePostal: string;
+  ville: string;
+  dateDerniereCommande: Date;
+
 }
 
 export class ProductDto {

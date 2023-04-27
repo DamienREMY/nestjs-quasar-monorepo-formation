@@ -19,6 +19,7 @@ export default defineComponent({
     const $quasar = useQuasar();
     const libelle = ref<string>('');
     const product = ref<ProductDto>();
+    const confirm = ref<boolean>(false);
     const code: string | null = localStorage.getItem('codeProduct');
 
     if (isString(code)) {
@@ -37,7 +38,7 @@ export default defineComponent({
       product,
       libelle,
       code,
-      confirm: ref(false),
+      confirm,
 
       onSubmit() {
         $quasar.notify({

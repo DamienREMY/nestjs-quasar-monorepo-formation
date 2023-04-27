@@ -1,10 +1,11 @@
-import { ProductDto } from '@formation/shared-lib';
+import { IPaginatedListDto, IPagination, ITEMS_PER_PAGE, ProductDto } from '@formation/shared-lib';
 
-import { defineComponent, onBeforeMount, onBeforeUpdate, ref } from 'vue';
+import { defineComponent, onBeforeMount, ref } from 'vue';
 
 import { productsApiService } from '../../boot/api';
 
 import { copyToClipboard, useQuasar } from 'quasar';
+import { isUndefined } from 'lodash';
 
 export default defineComponent({
   name: 'ProductListComponent',
@@ -16,32 +17,50 @@ export default defineComponent({
   },
 
   setup() {
+    const initialPagination: IPagination = {
+      page: 1,
+      rowsPerPage: ITEMS_PER_PAGE,
+      rowsNumber: 0,
+    };
+
     const product = ref<ProductDto>({
       code: '',
       libelle: '',
       commentaires: '',
     });
+
     const $quasar = useQuasar();
     const code = ref<string>('');
     const libelle = ref<string>('');
+    const pagination = ref({
+      ...initialPagination,
+    });
 
-    const listProducts = ref<ProductDto[]>();
+    const IPagProducts = ref<IPaginatedListDto<ProductDto>>({
+      list: [],
+      page: 1,
+    });
 
     onBeforeMount(async () => {
-      const workD = await productsApiService.getProductsList();
+
+      const nbProducts = await productsApiService.getAllProducts();
+
+      pagination.value.rowsNumber = !isUndefined(nbProducts.data) ? nbProducts.data : 0
+
+      const workD = (await productsApiService.getProductsList('1'));
+
       if (workD.isOk && !!workD.data) {
-        listProducts.value = workD.data;
+        IPagProducts.value = workD.data;
+
+        pagination.value.page = !isUndefined(IPagProducts.value.page) ? IPagProducts.value.page : 1
+        pagination.value.rowsPerPage = !isUndefined(IPagProducts.value.rowsPerPage) ? IPagProducts.value.rowsPerPage : ITEMS_PER_PAGE
+
+
       } else {
-        listProducts.value = [];
+        IPagProducts.value = {list:[], page :1};
+
       }
-    })
-
-    onBeforeUpdate(async() =>  {
-
-      const workD = await productsApiService.getProductsList()
-    })
-
-
+    });
 
     const columns = ref([
       {
@@ -49,7 +68,7 @@ export default defineComponent({
         required: true,
         label: 'Code produit',
         align: 'left',
-        field: (row: ProductDto) => row.code,
+        field: (row: ProductDto ) => row.code,
         format: (val: string) => `${val}`,
         sortable: true,
       },
@@ -75,10 +94,11 @@ export default defineComponent({
 
     return {
       columns,
-      listProducts,
+      IPagProducts,
       code,
       libelle,
       product,
+      pagination,
       confirm: ref(false),
       copyToClipboard,
 
@@ -103,13 +123,13 @@ export default defineComponent({
       await this.$router.push('products/' + code);
     },
 
-    async getProducts(): Promise<ProductDto[]> {
-      const workProducts = await productsApiService.getProductsList();
+    async getProducts(): Promise<IPaginatedListDto<ProductDto>> {
+      const workProducts = await productsApiService.getProductsList('1');
 
       if (workProducts.isOk && !!workProducts.data) {
         return workProducts.data;
       }
-      workProducts.data = [];
+      workProducts.data = {list:[], page:1};
       return workProducts.data;
     },
 
@@ -120,9 +140,9 @@ export default defineComponent({
       );
       if (code.length > 0) {
         if (products.isOk && !!products.data) {
-          this.listProducts = products.data;
+          this.IPagProducts = {list:[],page:1}//{ list : products.data}
         } else {
-          this.listProducts = [];
+          this.IPagProducts = {list:[],page:1};
         }
       }
     },

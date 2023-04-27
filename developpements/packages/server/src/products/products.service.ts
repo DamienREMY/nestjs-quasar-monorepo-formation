@@ -4,7 +4,7 @@ import {
   PrismaService,
 } from '@formation/servers-lib/dist/services';
 
-import {OffreDto, ProductDto, WorkDone } from '@formation/shared-lib';
+import {OffreDto, ProductDto, WorkDone, IPaginatedListDto, ITEMS_PER_PAGE } from '@formation/shared-lib';
 
 import {Injectable} from '@nestjs/common';
 
@@ -18,20 +18,35 @@ export class ProductsService {
   }
 
   // @Get('')
-  async getFirstToTenthProducts(): Promise<WorkDone<ProductDto[]>> {
+  async getProductsList(page:string): Promise<WorkDone<IPaginatedListDto<ProductDto>>> {
     try {
+      const numPage : number = Number(page)
       const dbProducts = await this.prismaService.produit.findMany({
+        skip: (numPage-1)*ITEMS_PER_PAGE,
         take: 10,
         orderBy: {
           code: 'asc',
         },
       });
 
-      return WorkDone.buildOk(dbProducts);
+      const dbPaginatedProducts : IPaginatedListDto<ProductDto> = {list :dbProducts, page: numPage}
+
+      return WorkDone.buildOk(dbPaginatedProducts);
     } catch (e) {
       return WorkDone.buildError('Erreur dans la sélection des 10 produits');
     }
   }
+
+  // @Get('all')
+  async getAllProducts(): Promise<WorkDone<number>> {
+
+    try{
+      const nbProducts = await this.prismaService.produit.count()
+      return WorkDone.buildOk(nbProducts)
+    }catch(e){return WorkDone.buildError('Erreur dans le comptage de ligne de la base produits')}
+  }
+
+
 
   // @Get('offers')
   async getOffersFromProducts(products: ProductDto[]) : Promise<WorkDone<OffreDto[]>> {

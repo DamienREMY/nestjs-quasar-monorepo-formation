@@ -1,4 +1,5 @@
 import {
+  IPaginatedListDto,
   OffreDto,
   ProductDto,
   WorkDone
@@ -12,9 +13,14 @@ export class ProductsApiService extends AbstractApiService {
     super(axiosInstance, serviceApiBaseUrl)
   }
 
-  // Get a list of products of the first to the tenth
-  public async getProductsList (): Promise<WorkDone<ProductDto[]>> {
-    return this.doGet('')
+  // Get a list of ten products
+  public async getProductsList (page: string): Promise<WorkDone<IPaginatedListDto<ProductDto>>> {
+    return this.doGet(`?page=${page}`)
+  }
+
+  // Get the total of products in the data base "produits"
+  public async getAllProducts():Promise<WorkDone<number>> {
+    return this.doGet('all')
   }
 
   // Get a list of products filtered from a "libelle"

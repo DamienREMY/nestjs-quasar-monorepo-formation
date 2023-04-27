@@ -31,6 +31,22 @@ model Produit {
     @@map(name: "ref_produits")
 }
 
+model Client {
+
+  codeFichierPartenaire String @db.VarChar @id
+  chronoClient String @db.VarChar
+
+  prenom String @db.VarChar 
+  nom String @db.VarChar
+
+  codePostal String @db.VarChar
+  ville String @db.VarChar
+
+  dateDerniereCommande DateTime? @db.Timestamptz(0) @map(name: "date_derniere_commande")
+  
+  @@map(name: "ref_clients")
+}
+
 model Offre {
 
     code String @db.VarChar @id

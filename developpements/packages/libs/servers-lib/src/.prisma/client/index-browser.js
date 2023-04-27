@@ -87,6 +87,16 @@ exports.Prisma.ProduitScalarFieldEnum = makeEnum({
   commentaires: 'commentaires'
 });
 
+exports.Prisma.ClientScalarFieldEnum = makeEnum({
+  codeFichierPartenaire: 'codeFichierPartenaire',
+  chronoClient: 'chronoClient',
+  prenom: 'prenom',
+  nom: 'nom',
+  codePostal: 'codePostal',
+  ville: 'ville',
+  dateDerniereCommande: 'dateDerniereCommande'
+});
+
 exports.Prisma.OffreScalarFieldEnum = makeEnum({
   code: 'code',
   libelle: 'libelle',
@@ -108,6 +118,7 @@ exports.Prisma.QueryMode = makeEnum({
 exports.Prisma.ModelName = makeEnum({
   Partenaire: 'Partenaire',
   Produit: 'Produit',
+  Client: 'Client',
   Offre: 'Offre'
 });
 

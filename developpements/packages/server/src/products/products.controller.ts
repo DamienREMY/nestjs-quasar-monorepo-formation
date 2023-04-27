@@ -1,7 +1,7 @@
 import { LoggerService } from '@formation/servers-lib/dist/services';
 import { AbstractController } from '@formation/servers-lib/dist/utils';
 
-import { ProductDto, OffreReferenceResultDto, WorkDone, OffreDto } from '@formation/shared-lib';
+import { ProductDto, WorkDone, OffreDto, IPaginatedListDto } from '@formation/shared-lib';
 
 import {
   Body,
@@ -27,8 +27,15 @@ export class ProductsController extends AbstractController {
   }
 
   @Get('')
-  async getFirstToTenthProducts(): Promise<WorkDone<ProductDto[]>> {
-    return this.productsService.getFirstToTenthProducts();
+  async getProductsList(
+    @Query('page') page: string,
+  ): Promise<WorkDone<IPaginatedListDto<ProductDto>>> {
+    return this.productsService.getProductsList(page);
+  }
+
+  @Get('all')
+  async getAllProducts(): Promise<WorkDone<number>> {
+    return this.productsService.getAllProducts();
   }
 
   @Get('filter')

@@ -58,7 +58,7 @@ export default defineComponent({
   setup () {
     const formChangedManager = { ...defineFormChangedManager() }
 
-    const searchAllResponse = ref<IPaginatedListDto<ProductDto>>({ list: [], rowsNumber: 0 })
+    const searchAllResponse = ref<IPaginatedListDto<ProductDto>>({ list: [], rowsNumber: 0,page:1 })
 
     // Define the initial state of the form
     const initialFormState: SearchProductDto = {

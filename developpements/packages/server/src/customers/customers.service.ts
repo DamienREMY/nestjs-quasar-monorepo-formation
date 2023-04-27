@@ -48,6 +48,20 @@ export class CustomersService {
     // }, rowMapper: toCustomerSearchResultDtoRowMapper })  if (wd.isOk && wd.data) { return (wd.data.length > 0) ? WorkDone.buildOk(wd.data[0]) :
     // WorkDone.buildError(`Customer with ChronoClient ${chronoClient} not found in fichPart ${codeFichierPartenaire} !`) } else { return WorkDone.toError(wd)
     // }
+
+    // try{
+    //   const dbClient = await this.prismaService.partenaire.findUnique(
+
+    //     {
+    //       where: { code: codeFichierPartenaire
+
+    //       }
+    //     }
+
+    //   )
+    // }
+
+
     return WorkDone.buildOk({
       codeFichierPartenaire: '001',
       chronoClient: '11111111',
@@ -108,6 +122,7 @@ export class CustomersService {
     //   })
     return WorkDone.buildOk({
       rowsNumber: 2,
+      page:1,
       list: [
         {
           codeFichierPartenaire: '001',
@@ -128,6 +143,7 @@ export class CustomersService {
           dateDerniereCommande: new Date(),
         },
       ],
+    
     });
   }
 }

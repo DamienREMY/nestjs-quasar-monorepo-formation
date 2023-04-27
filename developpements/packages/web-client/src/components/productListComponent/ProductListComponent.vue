@@ -6,7 +6,7 @@
       class="filter-form"
     >
     <q-input
-        id="code-search"
+        class="filter-input"
         v-model="code"
         label="Code commençant par: "
         stack-label
@@ -17,7 +17,7 @@
         ]"
       />
       <q-input
-        id="libelle-search"
+        class="filter-input"
         v-model="libelle"
         label="Libellé contenant: "
         placeholder="(Optionnel)"
@@ -34,12 +34,12 @@
     </q-form>
     <div>
       <q-table
+        v-model:pagination="pagination"
         :columns="columns"
         :grid="$q.screen.lt.md"
-        :rows="listProducts"
+        :rows="IPagProducts.list"
         binary-state-sort
         row-key="code"
-        style="with: 100%"
         title="Liste des produits"
       >
         <template #body-cell-code="props">

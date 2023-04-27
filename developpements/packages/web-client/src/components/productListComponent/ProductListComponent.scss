@@ -9,11 +9,18 @@
 }
 
 .filter-form {
-  width: 30%;
+  width: 60%;
+  display: flex;
+  margin-left: 40px;
+}
+
+.filter-input {
+  margin-right: 30px;
+  min-width: 150px;
 }
 
 .filter-button {
-  width: 170px;
+  min-width: 170px;
   margin: 20px 0px 20px 0px;
   grid-column: 3;
 }
