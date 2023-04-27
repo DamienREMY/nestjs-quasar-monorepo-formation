@@ -38,9 +38,11 @@
         :columns="columns"
         :grid="$q.screen.lt.md"
         :rows="IPagProducts.list"
+        :loading="loading"
         binary-state-sort
         row-key="code"
         title="Liste des produits"
+        @request="getProducts"
       >
         <template #body-cell-code="props">
           <q-td :props="props">

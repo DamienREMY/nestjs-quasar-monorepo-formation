@@ -1,4 +1,4 @@
-import { IPaginatedListDto, IPagination, ITEMS_PER_PAGE, ProductDto } from '@formation/shared-lib';
+import { IPaginatedListDto, IPagination, ITEMS_PER_PAGE, ProductDto, WorkDone } from '@formation/shared-lib';
 
 import { defineComponent, onBeforeMount, ref } from 'vue';
 
@@ -29,6 +29,7 @@ export default defineComponent({
       commentaires: '',
     });
 
+    const loading = ref(true)
     const $quasar = useQuasar();
     const code = ref<string>('');
     const libelle = ref<string>('');
@@ -60,7 +61,33 @@ export default defineComponent({
         IPagProducts.value = {list:[], page :1};
 
       }
+      loading.value = false
+
     });
+
+    async function getProducts(props:any): Promise<WorkDone<boolean>> {
+
+      loading.value = true
+
+      const page:string = props.pagination.page
+      pagination.value.page = Number(props.pagination.page)
+
+      console.log(page)
+
+      const workProducts = await productsApiService.getProductsList(String(page));
+
+      if (workProducts.isOk && !!workProducts.data) {
+        loading.value = false
+        IPagProducts.value = workProducts.data
+        console.log(IPagProducts.value)
+        return WorkDone.buildOk(workProducts.isOk)
+
+      }
+      IPagProducts.value= {list:[], page:1};
+      loading.value = false
+      return WorkDone.buildOk(workProducts.isOk)
+
+    }
 
     const columns = ref([
       {
@@ -99,7 +126,9 @@ export default defineComponent({
       libelle,
       product,
       pagination,
+      loading,
       confirm: ref(false),
+      getProducts,
       copyToClipboard,
 
       onSubmit(message: string, icon: string) {
@@ -121,16 +150,6 @@ export default defineComponent({
     async pushRouteToDetail(code: string) {
       localStorage.setItem('codeProduct', code);
       await this.$router.push('products/' + code);
-    },
-
-    async getProducts(): Promise<IPaginatedListDto<ProductDto>> {
-      const workProducts = await productsApiService.getProductsList('1');
-
-      if (workProducts.isOk && !!workProducts.data) {
-        return workProducts.data;
-      }
-      workProducts.data = {list:[], page:1};
-      return workProducts.data;
     },
 
     async getProductFiltered(code: string, libelle: string) {
